@@ -2,17 +2,24 @@ import { Box } from "@mui/material";
 import "./App.css";
 import Main from "./components/Main";
 import NavBar from "./components/NavBar";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { Route, Routes } from "react-router-dom";
+import LoginPage from "./components/LoginPage";
+import Toaster from "./components/Toaster";
+import { Logout } from "@mui/icons-material";
+import LogoutPage from "./components/LogoutPage";
 
 function App() {
     return (
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <Box width="100%" height="100%">
-                <NavBar />
-                <Main />
-            </Box>
-        </LocalizationProvider>
+        <Box width="100%" height="100%">
+            <Toaster />
+            <NavBar />
+            <Routes>
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<Main />} />
+                <Route path="/profile" element={<Main />} />
+                <Route path="/logout" element={<LogoutPage />} />
+            </Routes>
+        </Box>
     );
 }
 

@@ -1,29 +1,32 @@
-import {
-    Tabs,
-    Tab,
-    Grid,
-    Card,
-    Typography,
-    TextField,
-} from "@mui/material";
+import { Tabs, Tab, Grid, Card, Typography, TextField } from "@mui/material";
 import Box from "@mui/material/Box";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DatePicker } from "@mui/x-date-pickers";
 import { Button, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import axios from "axios";
-import { ADD_USER, GET_USER } from "../api";
-import InfoIcon from "@mui/icons-material/Info";
+import { ADD_USER, EDIT_USER, GET_USER } from "../api";
+import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { user } from "../features/User.reducer";
 
 const Main = () => {
     const [value, setValue] = React.useState(0);
+    const location = useLocation();
+    const userInfo = useSelector(user);
     const serviceParticularsRef = React.useRef(null);
     const workInfoRef = React.useRef(null);
     const familyInfoRef = React.useRef(null);
     const photosUploadRef = React.useRef(null);
     const parentBox = React.useRef(null);
     const [formData, setFormData] = useState({});
+    useEffect(() => {
+        if (userInfo.isLogin) {
+            console.log(userInfo);
+            setFormData(location.state);
+        }
+    }, [userInfo]);
     const normFile = (e) => {
         if (Array.isArray(e)) {
             return e;
@@ -33,13 +36,23 @@ const Main = () => {
     function check(variable) {
         return variable === null || variable === true;
     }
-    const [oldImage, setOldImage] = React.useState(null);
-    const [newImage, setNewImage] = React.useState(null);
+    const [oldImage, setOldImage] = React.useState(() =>
+        userInfo.isLogin ? location.state.oldImage : null
+    );
+    const [newImage, setNewImage] = React.useState(() =>
+        userInfo.isLogin ? location.state.newImage : null
+    );
     var minMax = require("dayjs/plugin/minMax");
     dayjs.extend(minMax);
-    const [dob, setdob] = useState(null);
-    const [dod, setdod] = useState(null);
-    const [dom, setdom] = useState(null);
+    const [dob, setdob] = useState(
+        userInfo.isLogin ? location.state.dob : null
+    );
+    const [dod, setdod] = useState(
+        userInfo.isLogin ? location.state.dod : null
+    );
+    const [dom, setdom] = useState(
+        userInfo.isLogin ? location.state.dom : null
+    );
     const [error, setError] = useState({});
     const [isCliked, setIsCliked] = useState(false);
     const errors = {
@@ -89,29 +102,53 @@ const Main = () => {
             outerDiv.scrollTop = scrollTo;
         }
     }, []);
-    function checkServiceNo() {
-        console.log("checking");
-        if (formData.serviceNo === undefined) return;
-        const serviceNo = formData.serviceNo;
-        const pattern = /^688\d{3}$/;
-        const valid = pattern.test(formData.serviceNo);
-        if (valid) {
-            axios
-                .get(GET_USER + "/" + serviceNo)
-                .then((res) => {
-                    const userData = res.data;
-                    delete userData.serviceNo;
-                    setFormData(userData);
-                })
-                .catch(() => {});
-        } else {
-            return;
-        }
-    }
+    // function checkServiceNo() {
+    //     console.log("checking");
+    //     if (formData.serviceNo === undefined) return;
+    //     const serviceNo = formData.serviceNo;
+    //     const pattern = /^688\d{3}$/;
+    //     const valid = pattern.test(formData.serviceNo);
+    //     if (valid) {
+    //         axios
+    //             .get(GET_USER + "/" + serviceNo)
+    //             .then((res) => {
+    //                 const userData = res.data;
+    //                 delete userData.serviceNo;
+    //                 setFormData(userData);
+    //             })
+    //             .catch(() => {});
+    //     } else {
+    //         return;
+    //     }
+    // }
     React.useEffect(() => {
         validate({});
-        checkServiceNo();
+        // checkServiceNo();
     }, [formData, isCliked]);
+
+    async function handleEdit() {
+        setIsCliked(true);
+        const data = validate(errors);
+        console.log(data);
+        const valids = Object.keys(data).map(
+            (val) => !(data[val] === null || data[val])
+        );
+        const isValid = valids.every((value) => value === true);
+        console.log(isValid, valids);
+        if (isValid) {
+            console.log(formData);
+            formData.dod = dod;
+            formData.dob = dob;
+            formData.dom = dom;
+            if (typeof formData.oldImage !== "string")
+                formData.oldImage = await getBase64Image(oldImage);
+            if (typeof formData.newImage !== "string")
+                formData.newImage = await getBase64Image(newImage); 
+            axios
+                .post(EDIT_USER, { ...formData, _id: location.state._id })
+                .then((val) => console.log(val));
+        }
+    }
 
     function validate(dd) {
         var temp = dd;
@@ -231,6 +268,12 @@ const Main = () => {
                                         <Grid container spacing={2}>
                                             <Grid item xs={6}>
                                                 <TextField
+                                                    value={
+                                                        formData.serviceNo
+                                                            ? formData.serviceNo
+                                                            : ""
+                                                    }
+                                                    disabled={userInfo.isLogin}
                                                     required
                                                     fullWidth
                                                     id="filled-basic"
@@ -293,6 +336,7 @@ const Main = () => {
                                             </Grid>
                                             <Grid item xs={6}>
                                                 <DatePicker
+                                                    format="DD/MM/YYYY"
                                                     value={
                                                         formData?.dob &&
                                                         dayjs(
@@ -328,6 +372,7 @@ const Main = () => {
                                             </Grid>
                                             <Grid item xs={6}>
                                                 <DatePicker
+                                                    format="DD/MM/YYYY"
                                                     value={
                                                         formData?.dod &&
                                                         dayjs(
@@ -567,6 +612,7 @@ const Main = () => {
                                             </Grid>
                                             <Grid item xs={6}>
                                                 <DatePicker
+                                                    format="DD/MM/YYYY"
                                                     value={
                                                         formData?.dom &&
                                                         dayjs(
@@ -733,8 +779,18 @@ const Main = () => {
                                                     maxCount={1}
                                                     getValueFromEvent={normFile}
                                                     listType="picture"
-                                                    beforeUpload={(file) => {
+                                                    beforeUpload={async (
+                                                        file
+                                                    ) => {
                                                         setNewImage(file);
+                                                        const b64 =
+                                                            await getBase64Image(
+                                                                file
+                                                            );
+                                                        setFormData({
+                                                            ...formData,
+                                                            newImage: b64,
+                                                        });
                                                         return false;
                                                     }}
                                                     style={{
@@ -766,12 +822,21 @@ const Main = () => {
                                                 alignItems="center"
                                                 textAlign="center"
                                             >
-                                                <Button
-                                                    style={{ marginTop: 4 }}
-                                                    onClick={handleSubmit}
-                                                >
-                                                    Submit
-                                                </Button>
+                                                {userInfo.isLogin ? (
+                                                    <Button
+                                                        style={{ marginTop: 4 }}
+                                                        onClick={handleEdit}
+                                                    >
+                                                        Edit
+                                                    </Button>
+                                                ) : (
+                                                    <Button
+                                                        style={{ marginTop: 4 }}
+                                                        onClick={handleSubmit}
+                                                    >
+                                                        Submit
+                                                    </Button>
+                                                )}
                                             </Grid>
                                         </Grid>
                                     </Box>

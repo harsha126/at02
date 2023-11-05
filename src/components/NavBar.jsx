@@ -6,18 +6,15 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import {
-    ListItem,
-    ListItemButton,
-    ListItemText,
-} from "@mui/material";
+import { ListItem, ListItemButton, ListItemText } from "@mui/material";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
+import { useNavigate } from "react-router-dom";
 
 const NavBar = () => {
     const [isOpen, setIsOpen] = React.useState(false);
-
+    const navigate = useNavigate();
     const toggleDrawer = (open) => (event) => {
         if (
             event.type === "keydown" &&
@@ -98,10 +95,17 @@ const NavBar = () => {
                     >
                         AT02
                     </Typography>
-                    <Button color="inherit">Login</Button>
+                    <Button color="inherit" onClick={() => navigate("/login")}>
+                        Login
+                    </Button>
                 </Toolbar>
             </AppBar>
-            <Drawer anchor={"left"} open={isOpen} onClose={toggleDrawer(false)} variant="persistent">
+            <Drawer
+                anchor={"left"}
+                open={isOpen}
+                onClose={toggleDrawer(false)}
+                variant="persistent"
+            >
                 {list("left")}
             </Drawer>
         </Box>
