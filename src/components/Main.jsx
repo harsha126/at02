@@ -7,7 +7,7 @@ import { UploadOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import axios from "axios";
 import { ADD_USER, EDIT_USER, GET_USER } from "../api";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { user } from "../features/User.reducer";
 
@@ -143,7 +143,7 @@ const Main = () => {
             if (typeof formData.oldImage !== "string")
                 formData.oldImage = await getBase64Image(oldImage);
             if (typeof formData.newImage !== "string")
-                formData.newImage = await getBase64Image(newImage); 
+                formData.newImage = await getBase64Image(newImage);
             axios
                 .post(EDIT_USER, { ...formData, _id: location.state._id })
                 .then((val) => console.log(val));
@@ -158,6 +158,15 @@ const Main = () => {
                 [val]:
                     formData[val] !== undefined && formData[val]?.length === 0,
             };
+            if (val === "serviceNo") {
+                temp = {
+                    ...temp,
+                    serviceNo:
+                        !/^688(196|197|198|199|2[0-9]{2}|3[0-8][0-9]|39[0-6]|095)$/.test(
+                            formData?.serviceNo
+                        ),
+                };
+            }
         });
         temp = {
             ...temp,
@@ -200,7 +209,6 @@ const Main = () => {
             (val) => !(data[val] === null || data[val])
         );
         const isValid = valids.every((value) => value === true);
-        console.log(isValid);
         if (isValid) {
             formData.dod = dod;
             formData.dob = dob;
@@ -210,9 +218,105 @@ const Main = () => {
             axios.post(ADD_USER, formData).then((val) => console.log(val));
         }
     }
+    // const handleScroll = () => {
+    //     const sectionPositions = sectionRefs.map((sectionRef) => ({
+    //         index: sectionRef.index,
+    //         offsetTop: sectionRef.ref.current.offsetTop,
+    //     }));
+
+    //     // Determine which section is in view based on the scroll position
+    //     const scrollPosition = parentBox.current.scrollTop;
+    //     for (let i = sectionPositions.length - 1; i >= 0; i--) {
+    //         if (scrollPosition >= sectionPositions[i].offsetTop) {
+    //             setActiveSection(sectionPositions[i].index);
+    //             break;
+    //         }
+    //     }
+    // };
+
+    // useEffect(() => {
+    //     // Add a scroll event listener to the parent container
+    //     const outerDivRef = parentBox;
+    //     if (outerDivRef.current) {
+    //         outerDivRef.current.addEventListener("scroll", handleScroll);
+    //     }
+
+    //     return () => {
+    //         // Remove the event listener when the component unmounts
+    //         if (outerDivRef.current) {
+    //             outerDivRef.current.removeEventListener("scroll", handleScroll);
+    //         }
+    //     };
+    // }, []); // This effect runs only once
+    // const [activeSection, setActiveSection] = useState(0);
+    // ... (other code remains the same)
+
+    // Update the active tab based on the active section
+    // const handleTabChange = (event, newValue) => {
+    //     const section = sectionRefs.find((val) => val.index === newValue);
+    //     if (parentBox.current && section.ref.current) {
+    //         const innerDiv = section.ref.current;
+    //         innerDiv.scrollIntoView({
+    //             behavior: "smooth",
+    //             block: "start",
+    //             top: 34,
+    //         });
+    //     }
+
+    //     setActiveSection(newValue);
+    // };
+
+    React.useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    console.log("Inner div is visible", entry);
+                    return true;
+                } else {
+                    console.log("Inner div is not visible", entry);
+                    return false;
+                }
+            },
+            {
+                root: null,
+                rootMargin: "0px",
+                threshold: 1.0,
+            }
+        );
+
+        // if (workInfoRef.current) {
+        //     observer.observe(workInfoRef.current);
+        // }
+        for (let i = 0; i < sectionRefs.length; i++) {
+            const section = sectionRefs[i];
+            if (section.ref.current && observer.observe(section.ref.current)) {
+                console.log("there");
+                setValue(section.index);
+                break;
+            }
+        }
+        // sectionRefs.forEach((section) => {
+        //     if (section.ref.current && observer.observe(section.ref.current)) {
+        //         console.log("there");
+        //         setValue(section.index);
+
+        //     }
+        // });
+
+        return () => {
+            // if (workInfoRef.current) {
+            //     observer.unobserve(workInfoRef.current);
+            // }
+            sectionRefs.forEach((section) => {
+                if (section.ref.current) {
+                    observer.unobserve(section.ref.current);
+                }
+            });
+        };
+    }, []);
 
     return (
-        <Box width="100%" height="100vh">
+        <Box width="100%">
             <Box width="100%" mt={2} display="flex" justifyContent="center">
                 <Grid container width="70%" mt={2} height="90px">
                     <Grid item xs={3}>
@@ -224,7 +328,7 @@ const Main = () => {
                             />
                         </Card>
                     </Grid>
-                    <Grid item xs={9} height="100vh" display="inline-block">
+                    <Grid item xs={9} display="inline-block">
                         <Card>
                             <Tabs
                                 value={value}
@@ -245,15 +349,12 @@ const Main = () => {
                             </Tabs>
 
                             <Box height="77vh" overflow="auto" ref={parentBox}>
-                                <Box
-                                    height="60vh"
-                                    ref={serviceParticularsRef}
-                                    p={2}
-                                >
+                                <Box height="60vh" p={2}>
                                     <Typography
                                         variant="h5"
                                         align="left"
                                         fontWeight="10px"
+                                        ref={serviceParticularsRef}
                                     >
                                         Service Particulars
                                     </Typography>
@@ -478,11 +579,12 @@ const Main = () => {
                                         </Grid>
                                     </Box>
                                 </Box>
-                                <Box height="40vh" ref={workInfoRef} p={2}>
+                                <Box height="40vh" p={2}>
                                     <Typography
                                         variant="h5"
                                         align="left"
                                         fontWeight="10px"
+                                        ref={workInfoRef}
                                     >
                                         Work Info
                                     </Typography>
@@ -568,11 +670,13 @@ const Main = () => {
                                         </Grid>
                                     </Box>
                                 </Box>
-                                <Box height="60vh" ref={familyInfoRef} p={2}>
+                                <Box height="60vh" p={2}>
                                     <Typography
                                         variant="h5"
                                         align="left"
                                         fontWeight="10px"
+                                        ref={familyInfoRef}
+                                        id="testing"
                                     >
                                         Family Info
                                     </Typography>
@@ -645,6 +749,7 @@ const Main = () => {
                                                 />
                                             </Grid>
                                             <Grid item xs={6}>
+                                                <Link to="/login">login</Link>
                                                 <TextField
                                                     value={
                                                         formData.children
@@ -723,6 +828,7 @@ const Main = () => {
                                         variant="h5"
                                         align="left"
                                         fontWeight="10px"
+                                        ref={photosUploadRef}
                                     >
                                         Photos Upload
                                     </Typography>

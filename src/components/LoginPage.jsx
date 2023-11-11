@@ -32,7 +32,8 @@ const LoginPage = () => {
         if (isCLicked) validateForm();
     }, [serviceNo, password]);
     function validateForm() {
-        const pattern = /^688\d{3}$/;
+        const pattern =
+            /^688(196|197|198|199|2[0-9]{2}|3[0-8][0-9]|39[0-6]|095)$/;
         const er = {};
         er.serviceNo = !pattern.test(serviceNo);
         er.password = password.length === 0;
@@ -51,7 +52,7 @@ const LoginPage = () => {
             .post(GET_USER, { serviceNo, password })
             .then((res) => {
                 dispatch(handleLogin({ isLogin: true }));
-                navigate("/profile", {state:{...res.data}});
+                navigate("/profile", { state: { ...res.data } });
             })
             .catch((err) => {
                 dispatch(
