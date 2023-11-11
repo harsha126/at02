@@ -1,5 +1,5 @@
 #root {
-  background-image: url('./../../../Downloads/airshow.avif');
+  background-image: url('./../public/airshow.avif');
   background-repeat: no-repeat;
   background-size: cover;
 }

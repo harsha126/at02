@@ -28,6 +28,7 @@ const LoginPage = () => {
         serviceNo: false,
         password: false,
     });
+    const [isLoading, setIsLoading] = useState(false);
     useEffect(() => {
         if (isCLicked) validateForm();
     }, [serviceNo, password]);
@@ -48,13 +49,16 @@ const LoginPage = () => {
     async function handleLoginForm() {
         const er = validateForm();
         if (er.serviceNo || er.password) return;
+        setIsLoading(true);
         axios
             .post(GET_USER, { serviceNo, password })
             .then((res) => {
+                setIsLoading(false);
                 dispatch(handleLogin({ isLogin: true }));
                 navigate("/profile", { state: { ...res.data } });
             })
             .catch((err) => {
+                setIsLoading(false);
                 dispatch(
                     handleToaster({
                         message: "User Not found",

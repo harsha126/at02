@@ -30,8 +30,6 @@ const NavBar = () => {
         display: "flex",
         alignItems: "center",
         padding: 2,
-        // necessary for content to be below app bar
-        // ...theme.mixins.toolbar,
         justifyContent: "flex-end",
     }));
     const [isOpen, setIsOpen] = React.useState(false);

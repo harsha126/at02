@@ -11,6 +11,7 @@ import LandingPage from "./components/LandingPage";
 import { useSelector } from "react-redux";
 import { user } from "./features/User.reducer";
 import AboutPage from "./components/AboutPage";
+import InfoPage from "./components/InfoPage";
 
 function App() {
     const userInfo = useSelector(user);
@@ -32,7 +33,8 @@ function App() {
                 {userInfo.isLogin && (
                     <Route path="/gallery" element={<LandingPage />} />
                 )}
-                <Route path="/about" element={<AboutPage/>}/>
+                <Route path="/about" element={<AboutPage />} />
+                <Route path="/info" element={<InfoPage />} />
                 <Route path="*" element={<Navigate replace to="/login" />} />
             </Routes>
         </Box>
