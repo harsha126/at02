@@ -8,7 +8,7 @@ const PublicRoute = () => {
     return !authenticated.isLogin ? (
         <Outlet />
     ) : (
-        <Navigate to={`/gallery`} replace />
+        <Navigate to={`/profile`} replace />
     );
 };
 

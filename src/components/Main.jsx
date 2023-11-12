@@ -6,27 +6,47 @@ import { Button, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import axios from "axios";
-import { ADD_USER, EDIT_USER, GET_USER } from "../api";
-import { Link, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { user } from "../features/User.reducer";
+import { ADD_USER, EDIT_USER, GET_USER, GET_USER_BY_ID } from "../api";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { handleLogin, user } from "../features/User.reducer";
+import { handleToaster } from "../features/Toaster.reducer";
 
 const Main = () => {
     const [value, setValue] = React.useState(0);
     const location = useLocation();
     const userInfo = useSelector(user);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     const serviceParticularsRef = React.useRef(null);
     const workInfoRef = React.useRef(null);
     const familyInfoRef = React.useRef(null);
     const photosUploadRef = React.useRef(null);
     const parentBox = React.useRef(null);
     const [formData, setFormData] = useState({});
+    const [oldImage, setOldImage] = React.useState(null);
+    const [newImage, setNewImage] = React.useState(null);
+    var minMax = require("dayjs/plugin/minMax");
+    dayjs.extend(minMax);
+    const [dob, setdob] = useState(null);
+    const [dod, setdod] = useState(null);
+    const [dom, setdom] = useState(null);
     useEffect(() => {
         if (userInfo.isLogin) {
-            console.log(userInfo);
-            setFormData(location.state);
+            if (location.state) {
+                setFormData(location.state);
+            } else {
+                axios.get(GET_USER_BY_ID + "/" + userInfo._id).then((res) => {
+                    setFormData(res.data);
+                    setOldImage(res.data.oldImage);
+                    setNewImage(res.data.newImage);
+                    setdob(res.data.dob);
+                    setdod(res.data.dod);
+                    setdom(res.data.dom);
+                });
+            }
         }
-    }, [userInfo]);
+    }, [userInfo.isLogin]);
     const normFile = (e) => {
         if (Array.isArray(e)) {
             return e;
@@ -36,23 +56,6 @@ const Main = () => {
     function check(variable) {
         return variable === null || variable === true;
     }
-    const [oldImage, setOldImage] = React.useState(() =>
-        userInfo.isLogin ? location.state.oldImage : null
-    );
-    const [newImage, setNewImage] = React.useState(() =>
-        userInfo.isLogin ? location.state.newImage : null
-    );
-    var minMax = require("dayjs/plugin/minMax");
-    dayjs.extend(minMax);
-    const [dob, setdob] = useState(
-        userInfo.isLogin ? location.state.dob : null
-    );
-    const [dod, setdod] = useState(
-        userInfo.isLogin ? location.state.dod : null
-    );
-    const [dom, setdom] = useState(
-        userInfo.isLogin ? location.state.dom : null
-    );
     const [error, setError] = useState({});
     const [isCliked, setIsCliked] = useState(false);
     const errors = {
@@ -215,7 +218,27 @@ const Main = () => {
             formData.dom = dom;
             formData.oldImage = await getBase64Image(oldImage);
             formData.newImage = await getBase64Image(newImage);
-            axios.post(ADD_USER, formData).then((val) => console.log(val));
+            axios
+                .post(ADD_USER, formData)
+                .then((val) => {
+                    const userData = val.data;
+                    dispatch(
+                        handleLogin({
+                            isLogin: true,
+                            _id: userData._id,
+                        })
+                    );
+                    navigate("/profile", { state: { ...userData } });
+                })
+                .catch((err) => {
+                    dispatch(
+                        handleToaster({
+                            message: "Something wetn wrong",
+                            severity: "error",
+                            open: true,
+                        })
+                    );
+                });
         }
     }
     // const handleScroll = () => {
@@ -266,54 +289,54 @@ const Main = () => {
     //     setActiveSection(newValue);
     // };
 
-    React.useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    console.log("Inner div is visible", entry);
-                    return true;
-                } else {
-                    console.log("Inner div is not visible", entry);
-                    return false;
-                }
-            },
-            {
-                root: null,
-                rootMargin: "0px",
-                threshold: 1.0,
-            }
-        );
+    // React.useEffect(() => {
+    //     const observer = new IntersectionObserver(
+    //         ([entry]) => {
+    //             if (entry.isIntersecting) {
+    //                 console.log("Inner div is visible", entry);
+    //                 return true;
+    //             } else {
+    //                 console.log("Inner div is not visible", entry);
+    //                 return false;
+    //             }
+    //         },
+    //         {
+    //             root: null,
+    //             rootMargin: "0px",
+    //             threshold: 1.0,
+    //         }
+    //     );
 
-        // if (workInfoRef.current) {
-        //     observer.observe(workInfoRef.current);
-        // }
-        for (let i = 0; i < sectionRefs.length; i++) {
-            const section = sectionRefs[i];
-            if (section.ref.current && observer.observe(section.ref.current)) {
-                console.log("there");
-                setValue(section.index);
-                break;
-            }
-        }
-        // sectionRefs.forEach((section) => {
-        //     if (section.ref.current && observer.observe(section.ref.current)) {
-        //         console.log("there");
-        //         setValue(section.index);
+    //     // if (workInfoRef.current) {
+    //     //     observer.observe(workInfoRef.current);
+    //     // }
+    //     for (let i = 0; i < sectionRefs.length; i++) {
+    //         const section = sectionRefs[i];
+    //         if (section.ref.current && observer.observe(section.ref.current)) {
+    //             console.log("there");
+    //             setValue(section.index);
+    //             break;
+    //         }
+    //     }
+    //     // sectionRefs.forEach((section) => {
+    //     //     if (section.ref.current && observer.observe(section.ref.current)) {
+    //     //         console.log("there");
+    //     //         setValue(section.index);
 
-        //     }
-        // });
+    //     //     }
+    //     // });
 
-        return () => {
-            // if (workInfoRef.current) {
-            //     observer.unobserve(workInfoRef.current);
-            // }
-            sectionRefs.forEach((section) => {
-                if (section.ref.current) {
-                    observer.unobserve(section.ref.current);
-                }
-            });
-        };
-    }, []);
+    //     return () => {
+    //         // if (workInfoRef.current) {
+    //         //     observer.unobserve(workInfoRef.current);
+    //         // }
+    //         sectionRefs.forEach((section) => {
+    //             if (section.ref.current) {
+    //                 observer.unobserve(section.ref.current);
+    //             }
+    //         });
+    //     };
+    // }, []);
 
     return (
         <Box width="100%">

@@ -6,3 +6,4 @@ export const ADD_USER = URL + "addUser";
 export const GET_USER = URL + "getOne";
 export const EDIT_USER = URL + "editOne";
 export const GET_ALL = URL + "getAll";
+export const GET_USER_BY_ID = URL+'getById'

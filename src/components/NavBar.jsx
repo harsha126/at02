@@ -37,6 +37,12 @@ const NavBar = () => {
         setIsOpen(false);
     };
     const navigate = useNavigate();
+    function navigateToPage(index) {
+        if (index === 0) navigate("/friends");
+        if (index === 1) navigate("/gallery");
+        if (index === 2) navigate("/info");
+        if (index === 3) navigate("/about");
+    }
     const toggleDrawer = (open) => (event) => {
         if (
             event.type === "keydown" &&
@@ -56,7 +62,7 @@ const NavBar = () => {
             onClick={toggleDrawer(false)}
             onKeyDown={toggleDrawer(false)}
         >
-            {userInfo.isLogin && (
+            {/* {userInfo.isLogin && (
                 <List>
                     {[
                         "Service Particulars",
@@ -72,25 +78,30 @@ const NavBar = () => {
                     ))}
                 </List>
             )}
-            <Divider />
+            <Divider /> */}
             <List>
                 {[
                     "AT02 Friends",
-                    "1st Reunion",
-                    "2nd Reunion",
-                    "3rd Reunion",
-                    "4th Reunion",
-                    "5th Reunion",
-                    "6th Reunion",
-                    "7th Reunion",
-                    "8th Reunion",
-                    "9th Reunion",
-                    "10th Reunion",
+                    "gallery",
+                    // "1st Reunion",
+                    // "2nd Reunion",
+                    // "3rd Reunion",
+                    // "4th Reunion",
+                    // "5th Reunion",
+                    // "6th Reunion",
+                    // "7th Reunion",
+                    // "8th Reunion",
+                    // "9th Reunion",
+                    // "10th Reunion",
                     "Air force info",
-                    "About"
+                    "About",
                 ].map((text, index) => (
                     <ListItem key={text}>
-                        <ListItemButton>
+                        <ListItemButton
+                            onClick={() => {
+                                navigateToPage(index);
+                            }}
+                        >
                             <ListItemText primary={text} />
                         </ListItemButton>
                     </ListItem>

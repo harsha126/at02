@@ -24,7 +24,7 @@ const InfoPage = () => {
                 </Typography>
 
                 <ul>
-                    <li>hello</li>
+                    <li>Sparsh<a href="./../../public/SparshGuidanceCircular.pdf">more ...</a></li>
                     <li>hello</li>
                     <li>hello</li>
                     <li>hello</li>

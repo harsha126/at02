@@ -1,9 +1,11 @@
 import {
     Box,
     Divider,
+    Grid,
     IconButton,
     ImageList,
     ImageListItem,
+    Link,
     Menu,
     MenuItem,
     Paper,
@@ -11,9 +13,15 @@ import {
 } from "@mui/material";
 import React from "react";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import useSelection from "antd/es/table/hooks/useSelection";
+import { useDispatch, useSelector } from "react-redux";
+import { user } from "../features/User.reducer";
+import { handleToaster } from "../features/Toaster.reducer";
 
-const ImageBox = ({ title, images }) => {
+const ImageBox = ({ title, images, link }) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const userInfo = useSelector(user);
+    const dispatch = useDispatch();
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -22,9 +30,7 @@ const ImageBox = ({ title, images }) => {
         setAnchorEl(null);
     };
     return (
-        <Box
-          
-        >
+        <Box>
             <Box
                 sx={{
                     width: "fit-content",
@@ -38,51 +44,61 @@ const ImageBox = ({ title, images }) => {
                     alignItems="center"
                 >
                     <Typography variant="title">{title}</Typography>
-                    <IconButton
-                        onClick={handleClick}
-                        id="basic-button"
-                        aria-controls={open ? "basic-menu" : undefined}
-                        aria-haspopup="true"
-                        aria-expanded={open ? "true" : undefined}
-                    >
-                        <MoreHorizIcon />
-                        <Menu
-                            id="basic-menu"
-                            anchorEl={() => anchorEl}
-                            open={open}
-                            onClose={handleClose}
-                            MenuListProps={{
-                                "aria-labelledby": "basic-button",
-                            }}
-                        >
-                            <MenuItem onClick={handleClose}>
-                                Drive link
-                            </MenuItem>
-                        </Menu>
-                    </IconButton>
                 </Box>
                 <Divider variant="fullWidth" />
-                <ImageList sx={{ width: 900 }} cols={6} rowHeight={85} gap={6}>
-                    <ImageListItem>
-                        <img src="https://picsum.photos/200" height="200" />
-                    </ImageListItem>
-                    <ImageListItem>
-                        <img src="https://picsum.photos/200" height="200" />
-                    </ImageListItem>
-                    <ImageListItem>
-                        <img src="https://picsum.photos/200" height="200" />
-                    </ImageListItem>
-                    <ImageListItem>
-                        <img src="https://picsum.photos/200" height="200" />
-                    </ImageListItem>
-                    <ImageListItem>
-                        <img src="https://picsum.photos/200" height="200" />
-                    </ImageListItem>
-                    <ImageListItem>
-                        <img src="https://picsum.photos/200" height="200" />
-                    </ImageListItem>
-                    <ImageListItem></ImageListItem>
-                </ImageList>
+                <Grid container>
+                    <Grid item xs={4}>
+                        <img src="https://picsum.photos/200" />
+                    </Grid>
+                    <Grid item xs={4}>
+                        <img src="https://picsum.photos/200" />
+                    </Grid>
+                    <Grid item xs={4}>
+                        <img src="https://picsum.photos/200" />
+                    </Grid>
+                    <Grid item xs={4}>
+                        <img src="https://picsum.photos/200" />
+                    </Grid>
+                    <Grid item xs={4}>
+                        <img src="https://picsum.photos/200" />
+                    </Grid>
+                    <Grid item xs={4}>
+                        <Box
+                            width="100%"
+                            height="100%"
+                            sx={{
+                                bgcolor: "rgba(255,255,255,0.3)",
+                                "&:hover": {
+                                    bgcolor: "rgba(255,255,255,0.5)",
+                                },
+                                transition: "0.3s",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                            }}
+                        >
+                            <Typography>
+                                <Link
+                                    onClick={() => {
+                                        if (userInfo.isLogin) {
+                                            window.open(link, "_blank");
+                                        } else {
+                                            dispatch(
+                                                handleToaster({
+                                                    message: "Please login",
+                                                    severity: "warning",
+                                                    open: true,
+                                                })
+                                            );
+                                        }
+                                    }}
+                                >
+                                    View More
+                                </Link>
+                            </Typography>
+                        </Box>
+                    </Grid>
+                </Grid>
             </Box>
         </Box>
     );

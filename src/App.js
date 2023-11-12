@@ -13,6 +13,7 @@ import AboutPage from "./components/AboutPage";
 import InfoPage from "./components/InfoPage";
 import PublicRoute from "./components/PublicRoute";
 import ProtectedRoute from "./components/ProtectedRoute";
+import FriendsPage from "./components/FriendsPage";
 
 function App() {
     // const userInfo = useSelector(user);
@@ -27,9 +28,10 @@ function App() {
                 </Route>
                 <Route element={<ProtectedRoute />}>
                     <Route path="/profile" element={<Main />} />
-                    <Route path="/gallery" element={<LandingPage />} />
+                    <Route path="/friends" element={<FriendsPage />} />
                     <Route path="/logout" element={<LogoutPage />} />
                 </Route>
+                <Route path="/gallery" element={<LandingPage />} />
 
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/info" element={<InfoPage />} />

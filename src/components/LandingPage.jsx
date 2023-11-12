@@ -2,6 +2,7 @@ import { Box, Paper, Typography } from "@mui/material";
 import React from "react";
 import ImageBox from "./ImageBox";
 import styled from "styled-components";
+import { driveLinks } from "../data/driveLinks";
 const LandingPage = () => {
     const MyScrollingElement = styled(Paper)(() => ({
         overflow: "auto",
@@ -31,18 +32,17 @@ const LandingPage = () => {
             <MyScrollingElement
                 sx={{
                     maxHeight: "450px",
-                    marginX: { md: "160px", sm: "120px", xs: "60px" },
+                    marginX: 'auto',
                     backdropFilter: "blur(5px)",
                     backgroundColor:'transparent',
                     width:'fit-content'
                 }}
             >
-                <ImageBox title="Reunion 1" />
-                <ImageBox title="Reunion 2" />
-                <ImageBox title="Reunion 3" />
-                <ImageBox title="Reunion 1" />
-                <ImageBox title="Reunion 2" />
-                <ImageBox title="Reunion 3" />
+               {
+                driveLinks.map(drive=>(
+                    <ImageBox title={drive.name} key={drive.name} link={drive.link}/>
+                ))
+               }
             </MyScrollingElement>
         </Box>
     );

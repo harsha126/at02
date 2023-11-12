@@ -54,7 +54,7 @@ const LoginPage = () => {
             .post(GET_USER, { serviceNo, password })
             .then((res) => {
                 setIsLoading(false);
-                dispatch(handleLogin({ isLogin: true }));
+                dispatch(handleLogin({ isLogin: true, _id: res.data["_id"] }));
                 navigate("/profile", { state: { ...res.data } });
             })
             .catch((err) => {
