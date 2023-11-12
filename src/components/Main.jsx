@@ -46,7 +46,7 @@ const Main = () => {
                 });
             }
         }
-    }, [userInfo.isLogin]);
+    }, [userInfo]);
     const normFile = (e) => {
         if (Array.isArray(e)) {
             return e;
@@ -137,9 +137,7 @@ const Main = () => {
             (val) => !(data[val] === null || data[val])
         );
         const isValid = valids.every((value) => value === true);
-        console.log(isValid, valids);
         if (isValid) {
-            console.log(formData);
             formData.dod = dod;
             formData.dob = dob;
             formData.dom = dom;
@@ -148,8 +146,26 @@ const Main = () => {
             if (typeof formData.newImage !== "string")
                 formData.newImage = await getBase64Image(newImage);
             axios
-                .post(EDIT_USER, { ...formData, _id: location.state._id })
-                .then((val) => console.log(val));
+                .post(EDIT_USER, { ...formData, _id: userInfo._id })
+                .then((val) => {
+                    dispatch(
+                        handleToaster({
+                            message: "Successfully edited",
+                            severity: "success",
+                            open: true,
+                        })
+                    );
+                    setFormData(val.data);
+                })
+                .catch((err) => {
+                    dispatch(
+                        handleToaster({
+                            message: "Something went wrong",
+                            severity: "error",
+                            open: true,
+                        })
+                    );
+                });
         }
     }
 
@@ -222,6 +238,13 @@ const Main = () => {
                 .post(ADD_USER, formData)
                 .then((val) => {
                     const userData = val.data;
+                    dispatch(
+                        handleToaster({
+                            message: "Submitted Successfully",
+                            severity: "error",
+                            open: true,
+                        })
+                    );
                     dispatch(
                         handleLogin({
                             isLogin: true,
@@ -341,8 +364,14 @@ const Main = () => {
     return (
         <Box width="100%">
             <Box width="100%" mt={2} display="flex" justifyContent="center">
-                <Grid container width="70%" mt={2} height="90px">
-                    <Grid item xs={3}>
+                <Grid
+                    container
+                    sx={{ width: { xs: "100%", lg: "70%" } }}
+                    mx="auto"
+                    mt={2}
+                    height="90px"
+                >
+                    <Grid item xs="none">
                         <Card elevation={2} sx={{ display: "inline-block" }}>
                             <img
                                 src={formData?.newImage}

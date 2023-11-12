@@ -10,6 +10,7 @@ import {
     ListItem,
     ListItemButton,
     ListItemText,
+    useMediaQuery,
     useTheme,
 } from "@mui/material";
 import Drawer from "@mui/material/Drawer";
@@ -21,11 +22,15 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { useDispatch, useSelector } from "react-redux";
 import { handleLogout, user } from "../features/User.reducer";
+import { reunionMappings } from "../data/reunion";
 
 const NavBar = () => {
     const theme = useTheme();
     const dispatch = useDispatch();
     const userInfo = useSelector(user);
+    const greaterThanMid = useMediaQuery(theme.breakpoints.up("md"));
+    const smallToMid = useMediaQuery(theme.breakpoints.between("sm", "md"));
+    const lessThanSmall = useMediaQuery(theme.breakpoints.down("sm"));
     const DrawerHeader = styled("div")(({ theme }) => ({
         display: "flex",
         alignItems: "center",
@@ -37,11 +42,14 @@ const NavBar = () => {
         setIsOpen(false);
     };
     const navigate = useNavigate();
+    function navigateToGallery(text) {
+        navigate("/" + text);
+    }
     function navigateToPage(index) {
         if (index === 0) navigate("/friends");
-        if (index === 1) navigate("/gallery");
-        if (index === 2) navigate("/info");
-        if (index === 3) navigate("/about");
+        if (index === 1) navigate("/info");
+        if (index === 2) navigate("/about");
+        if (index === 3) navigate("/profile");
     }
     const toggleDrawer = (open) => (event) => {
         if (
@@ -62,50 +70,34 @@ const NavBar = () => {
             onClick={toggleDrawer(false)}
             onKeyDown={toggleDrawer(false)}
         >
-            {/* {userInfo.isLogin && (
-                <List>
-                    {[
-                        "Service Particulars",
-                        "Work Info",
-                        "Family Info",
-                        "Photos",
-                    ].map((text, index) => (
-                        <ListItem key={text}>
-                            <ListItemButton>
-                                <ListItemText primary={text} />
-                            </ListItemButton>
-                        </ListItem>
-                    ))}
-                </List>
-            )}
-            <Divider /> */}
             <List>
-                {[
-                    "AT02 Friends",
-                    "gallery",
-                    // "1st Reunion",
-                    // "2nd Reunion",
-                    // "3rd Reunion",
-                    // "4th Reunion",
-                    // "5th Reunion",
-                    // "6th Reunion",
-                    // "7th Reunion",
-                    // "8th Reunion",
-                    // "9th Reunion",
-                    // "10th Reunion",
-                    "Air force info",
-                    "About",
-                ].map((text, index) => (
+                {Object.keys(reunionMappings).map((text, index) => (
                     <ListItem key={text}>
                         <ListItemButton
                             onClick={() => {
-                                navigateToPage(index);
+                                navigateToGallery(text);
                             }}
                         >
-                            <ListItemText primary={text} />
+                            <ListItemText primary={reunionMappings[text]} />
                         </ListItemButton>
                     </ListItem>
                 ))}
+            </List>
+            <Divider />
+            <List>
+                {["AT02 Friends", "Air force info", "About", "profile"].map(
+                    (text, index) => (
+                        <ListItem key={text}>
+                            <ListItemButton
+                                onClick={() => {
+                                    navigateToPage(index);
+                                }}
+                            >
+                                <ListItemText primary={text} />
+                            </ListItemButton>
+                        </ListItem>
+                    )
+                )}
             </List>
         </Box>
     );
@@ -126,7 +118,7 @@ const NavBar = () => {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <img src="./logo.png" className="logo" />
+                    <img src="./logo.PNG" className="logo" />
                     <Typography
                         variant="h6"
                         component="div"
@@ -134,6 +126,26 @@ const NavBar = () => {
                     >
                         AT02
                     </Typography>
+                    {greaterThanMid && (
+                        <Box
+                            sx={{
+                                marginRight: 3,
+                            }}
+                        >
+                            <Button
+                                color="inherit"
+                                onClick={() => navigate("/about")}
+                            >
+                                About
+                            </Button>
+                            <Button
+                                color="inherit"
+                                onClick={() => navigate("/info")}
+                            >
+                                USEFULL INFO
+                            </Button>
+                        </Box>
+                    )}
                     {!userInfo.isLogin && (
                         <Button
                             color="inherit"

@@ -31,10 +31,10 @@ function App() {
                     <Route path="/friends" element={<FriendsPage />} />
                     <Route path="/logout" element={<LogoutPage />} />
                 </Route>
-                <Route path="/gallery" element={<LandingPage />} />
-
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/info" element={<InfoPage />} />
+                <Route path="/:id" element={<LandingPage />} />
+                <Route path="/" element={<LandingPage />} />
                 <Route path="*" element={<Navigate replace to="/login" />} />
             </Routes>
         </Box>

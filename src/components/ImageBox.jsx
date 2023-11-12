@@ -32,37 +32,38 @@ const ImageBox = ({ title, images, link }) => {
     return (
         <Box>
             <Box
+                data-id={title}
                 sx={{
                     width: "fit-content",
                     p: 1,
-                    m: 2,
                 }}
             >
                 <Box
                     display="flex"
                     justifyContent="space-between"
                     alignItems="center"
+                    id={title}
                 >
                     <Typography variant="title">{title}</Typography>
                 </Box>
                 <Divider variant="fullWidth" />
                 <Grid container>
-                    <Grid item xs={4}>
+                    <Grid item xs={12} md={4} sm={6}>
                         <img src="https://picsum.photos/200" />
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={12} md={4} sm={6}>
                         <img src="https://picsum.photos/200" />
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={12} md={4} sm={6}>
                         <img src="https://picsum.photos/200" />
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={12} md={4} sm={6}>
                         <img src="https://picsum.photos/200" />
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={12} md={4} sm={6}>
                         <img src="https://picsum.photos/200" />
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={12} md={4} sm={6}>
                         <Box
                             width="100%"
                             height="100%"

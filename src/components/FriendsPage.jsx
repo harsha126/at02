@@ -37,7 +37,7 @@ const FriendsPage = () => {
             {allUsers.map((user) => (
                 <>
                     <Grid item xs={12} md={3} sm={6} lg={3}>
-                        <Card sx={{ maxWidth: 250, p: 2, m: 2 }}>
+                        <Card sx={{ maxWidth: 220, p: 2, m: 2 }}>
                             <CardMedia
                                 sx={{
                                     display: "flex",
@@ -81,7 +81,6 @@ const FriendsPage = () => {
                                 >
                                     Name : {user.name}
                                 </Typography>
-                                <br></br>
                                 <Typography
                                     variant="h7"
                                     component="div"
