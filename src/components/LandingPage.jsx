@@ -32,7 +32,6 @@ const LandingPage = () => {
                 sx={{
                     maxHeight: "450px",
                     marginX: { md: "160px", sm: "120px", xs: "60px" },
-                    // color: "rgba(255,255,255,0.2)",
                     backdropFilter: "blur(5px)",
                     backgroundColor:'transparent',
                     width:'fit-content'

@@ -749,7 +749,6 @@ const Main = () => {
                                                 />
                                             </Grid>
                                             <Grid item xs={6}>
-                                                <Link to="/login">login</Link>
                                                 <TextField
                                                     value={
                                                         formData.children
