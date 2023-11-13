@@ -1,10 +1,11 @@
-import { Box, Paper, Typography } from "@mui/material";
+import { Box, Paper, ThemeProvider, Typography } from "@mui/material";
 import React, { useEffect, useRef } from "react";
 import ImageBox from "./ImageBox";
 import styled from "styled-components";
 import { driveLinks } from "../data/driveLinks";
 import { useParams } from "react-router-dom";
 import { reunionMappings } from "../data/reunion";
+import { theme } from "../theme";
 function findKeyByValue(object, value) {
     for (const key in object) {
         if (object[key] === value) {
@@ -47,14 +48,16 @@ const LandingPage = () => {
                 justifyContent="center"
                 fontWeight="bold"
             >
-                <Typography
-                    variant="title"
-                    sx={{
-                        fontSize: { xs: "50px", md: "100px" },
-                    }}
-                >
-                    REUNION
-                </Typography>
+                <ThemeProvider theme={theme}>
+                    <Typography
+                        variant="title"
+                        sx={{
+                            fontSize: { xs: "50px", md: "80px" },
+                        }}
+                    >
+                        REUNION
+                    </Typography>
+                </ThemeProvider>
             </Box>
             <MyScrollingElement
                 ref={scrollingElementRef}

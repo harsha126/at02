@@ -133,14 +133,20 @@ const NavBar = () => {
                             <Button
                                 color="inherit"
                                 onClick={() => navigate("/about")}
+                                sx={{
+                                    textTransform: "none",
+                                }}
                             >
-                                About
+                                <Typography>About Us</Typography>
                             </Button>
                             <Button
                                 color="inherit"
                                 onClick={() => navigate("/info")}
+                                sx={{
+                                    textTransform: "none",
+                                }}
                             >
-                                USEFULL INFO
+                                <Typography>Usefull Info</Typography>
                             </Button>
                         </Box>
                     )}
