@@ -11,17 +11,22 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GET_ALL } from "../api";
 import styled from "styled-components";
+import Loader from "./Loader";
 
 const FriendsPage = () => {
     const [allUsers, setAllUsers] = useState([]);
+    const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate();
     useEffect(() => {
+        setIsLoading(true);
         axios
             .get(GET_ALL)
             .then((res) => {
+                setIsLoading(false);
                 setAllUsers(res.data);
             })
             .catch((err) => {
+                setIsLoading(false);
                 navigate(-1);
             });
     }, []);
@@ -34,6 +39,7 @@ const FriendsPage = () => {
                 padding: 2,
             }}
         >
+            {isLoading && <Loader/>}
             {allUsers.map((user) => (
                 <>
                     <Grid item xs={12} md={3} sm={6} lg={3}>
