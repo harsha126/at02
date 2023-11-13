@@ -5,6 +5,14 @@ import styled from "styled-components";
 import { driveLinks } from "../data/driveLinks";
 import { useParams } from "react-router-dom";
 import { reunionMappings } from "../data/reunion";
+function findKeyByValue(object, value) {
+    for (const key in object) {
+        if (object[key] === value) {
+            return key;
+        }
+    }
+    return null;
+}
 const LandingPage = () => {
     const { id } = useParams();
     const MyScrollingElement = styled(Paper)(() => ({
@@ -39,16 +47,19 @@ const LandingPage = () => {
                 justifyContent="center"
                 fontWeight="bold"
             >
-                <Typography variant="title" sx={{
-                    fontSize:{xs:'50px',md:"100px"}
-                }}>
+                <Typography
+                    variant="title"
+                    sx={{
+                        fontSize: { xs: "50px", md: "100px" },
+                    }}
+                >
                     REUNION
                 </Typography>
             </Box>
             <MyScrollingElement
                 ref={scrollingElementRef}
                 sx={{
-                    maxHeight: "450px",
+                    maxHeight: "500px",
                     marginX: "auto",
                     backdropFilter: "blur(5px)",
                     backgroundColor: "transparent",
@@ -60,7 +71,7 @@ const LandingPage = () => {
                         title={drive.name}
                         key={drive.name}
                         link={drive.link}
-                        data-id={drive.name}
+                        image={findKeyByValue(reunionMappings, drive.name)}
                     />
                 ))}
             </MyScrollingElement>

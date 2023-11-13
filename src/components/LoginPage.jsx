@@ -16,6 +16,7 @@ import { GET_USER } from "../api";
 import { useDispatch } from "react-redux";
 import { handleToaster } from "../features/Toaster.reducer";
 import { handleLogin } from "../features/User.reducer";
+import Loader from "./Loader";
 
 const LoginPage = () => {
     const dispatch = useDispatch();
@@ -85,6 +86,7 @@ const LoginPage = () => {
                     textAlign="center"
                     gap={2}
                 >
+                    {isLoading && <Loader />}
                     <Stack direction="column" spacing={3} p={3} width="400px">
                         <Typography variant="h4">Login</Typography>
                         <TextField
@@ -136,6 +138,7 @@ const LoginPage = () => {
                                 setIsCLicked(true);
                                 handleLoginForm();
                             }}
+                            disabled={isLoading}
                         >
                             Login
                         </Button>

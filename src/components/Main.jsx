@@ -6,8 +6,8 @@ import { Button, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import axios from "axios";
-import { ADD_USER, EDIT_USER, GET_USER, GET_USER_BY_ID } from "../api";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { ADD_USER, EDIT_USER, GET_USER_BY_ID } from "../api";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { handleLogin, user } from "../features/User.reducer";
 import { handleToaster } from "../features/Toaster.reducer";
@@ -46,7 +46,7 @@ const Main = () => {
                 });
             }
         }
-    }, [userInfo]);
+    }, [userInfo,location.state]);
     const normFile = (e) => {
         if (Array.isArray(e)) {
             return e;

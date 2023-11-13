@@ -16,7 +16,7 @@ import {
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -29,8 +29,6 @@ const NavBar = () => {
     const dispatch = useDispatch();
     const userInfo = useSelector(user);
     const greaterThanMid = useMediaQuery(theme.breakpoints.up("md"));
-    const smallToMid = useMediaQuery(theme.breakpoints.between("sm", "md"));
-    const lessThanSmall = useMediaQuery(theme.breakpoints.down("sm"));
     const DrawerHeader = styled("div")(({ theme }) => ({
         display: "flex",
         alignItems: "center",

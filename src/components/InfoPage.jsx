@@ -1,5 +1,7 @@
 import { Box, Paper, Typography } from "@mui/material";
 import React from "react";
+import pdf1 from "./../assets/SparshGuidanceCircular.pdf";
+import pdf2 from "./../assets/93d865c1-18a6-495d-9b11-01b68c371131.pdf";
 
 const InfoPage = () => {
     return (
@@ -24,10 +26,18 @@ const InfoPage = () => {
                 </Typography>
 
                 <ul>
-                    <li>Sparsh<a href="./../../public/SparshGuidanceCircular.pdf">more ...</a></li>
-                    <li>hello</li>
-                    <li>hello</li>
-                    <li>hello</li>
+                    <li>
+                        Sparsh information :
+                        <a href={pdf1} target="_blank">
+                            more ...
+                        </a>
+                    </li>
+                    <li>
+                        Sparsh Portal : &nbsp 
+                        <a href={pdf2} target="_blank">
+                            more ...
+                        </a>
+                    </li>
                 </ul>
             </Paper>
         </Box>

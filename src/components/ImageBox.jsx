@@ -2,33 +2,40 @@ import {
     Box,
     Divider,
     Grid,
-    IconButton,
-    ImageList,
-    ImageListItem,
     Link,
-    Menu,
-    MenuItem,
-    Paper,
     Typography,
 } from "@mui/material";
 import React from "react";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import useSelection from "antd/es/table/hooks/useSelection";
 import { useDispatch, useSelector } from "react-redux";
 import { user } from "../features/User.reducer";
 import { handleToaster } from "../features/Toaster.reducer";
 
-const ImageBox = ({ title, images, link }) => {
-    const [anchorEl, setAnchorEl] = React.useState(null);
+const ImageBox = ({ title, image, link }) => {
     const userInfo = useSelector(user);
     const dispatch = useDispatch();
-    const open = Boolean(anchorEl);
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
+    const images = [1, 2, 3, 4, 5].map((num) => {
+        let pic;
+        try {
+            pic = require(`./../assets/${image} (${num}).jpg`);
+        } catch (error) {
+            pic = require(`./../assets/${image} (${num}).JPG`);
+        }
+        return (
+            <Grid
+                item
+                xs={12}
+                md={4}
+                sm={6}
+                key={`./../assets/${image} (${num}).jpg`}
+                alignItems='center'
+                display='flex'
+                justifyContent='center'
+                padding={2}
+            >
+                <img src={pic} height="250px"/>
+            </Grid>
+        );
+    });
     return (
         <Box>
             <Box
@@ -43,26 +50,13 @@ const ImageBox = ({ title, images, link }) => {
                     justifyContent="space-between"
                     alignItems="center"
                     id={title}
+                    padding={3}
                 >
-                    <Typography variant="title">{title}</Typography>
+                    <Typography variant="title"  fontSize='20px' fontWeight='bold'>{title}</Typography>
                 </Box>
                 <Divider variant="fullWidth" />
                 <Grid container>
-                    <Grid item xs={12} md={4} sm={6}>
-                        <img src="https://picsum.photos/200" />
-                    </Grid>
-                    <Grid item xs={12} md={4} sm={6}>
-                        <img src="https://picsum.photos/200" />
-                    </Grid>
-                    <Grid item xs={12} md={4} sm={6}>
-                        <img src="https://picsum.photos/200" />
-                    </Grid>
-                    <Grid item xs={12} md={4} sm={6}>
-                        <img src="https://picsum.photos/200" />
-                    </Grid>
-                    <Grid item xs={12} md={4} sm={6}>
-                        <img src="https://picsum.photos/200" />
-                    </Grid>
+                    {images}
                     <Grid item xs={12} md={4} sm={6}>
                         <Box
                             width="100%"
@@ -76,6 +70,20 @@ const ImageBox = ({ title, images, link }) => {
                                 display: "flex",
                                 alignItems: "center",
                                 justifyContent: "center",
+                                cursor:'pointer'
+                            }}
+                            onClick={() => {
+                                if (userInfo.isLogin) {
+                                    window.open(link, "_blank");
+                                } else {
+                                    dispatch(
+                                        handleToaster({
+                                            message: "Please login",
+                                            severity: "warning",
+                                            open: true,
+                                        })
+                                    );
+                                }
                             }}
                         >
                             <Typography>

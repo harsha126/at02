@@ -14,6 +14,7 @@ import InfoPage from "./components/InfoPage";
 import PublicRoute from "./components/PublicRoute";
 import ProtectedRoute from "./components/ProtectedRoute";
 import FriendsPage from "./components/FriendsPage";
+import Loader from "./components/Loader";
 
 function App() {
     // const userInfo = useSelector(user);
@@ -35,7 +36,7 @@ function App() {
                 <Route path="/info" element={<InfoPage />} />
                 <Route path="/:id" element={<LandingPage />} />
                 <Route path="/" element={<LandingPage />} />
-                <Route path="*" element={<Navigate replace to="/login" />} />
+                {/* <Route path="*" element={<Navigate replace to="/login" />} /> */}
             </Routes>
         </Box>
     );
