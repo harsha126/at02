@@ -69,21 +69,7 @@ const NavBar = () => {
             onKeyDown={toggleDrawer(false)}
         >
             <List>
-                {Object.keys(reunionMappings).map((text, index) => (
-                    <ListItem key={text}>
-                        <ListItemButton
-                            onClick={() => {
-                                navigateToGallery(text);
-                            }}
-                        >
-                            <ListItemText primary={reunionMappings[text]} />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
-            </List>
-            <Divider />
-            <List>
-                {["AT02 Friends", "Air force info", "About", "profile"].map(
+                {["AT02 Friends", "Useful Info", "About", "Profile"].map(
                     (text, index) => (
                         <ListItem key={text}>
                             <ListItemButton
@@ -96,6 +82,20 @@ const NavBar = () => {
                         </ListItem>
                     )
                 )}
+            </List>
+            <Divider />
+            <List>
+                {Object.keys(reunionMappings).map((text, index) => (
+                    <ListItem key={text}>
+                        <ListItemButton
+                            onClick={() => {
+                                navigateToGallery(text);
+                            }}
+                        >
+                            <ListItemText primary={reunionMappings[text]} />
+                        </ListItemButton>
+                    </ListItem>
+                ))}
             </List>
         </Box>
     );
@@ -132,6 +132,15 @@ const NavBar = () => {
                         >
                             <Button
                                 color="inherit"
+                                onClick={() => navigate("/")}
+                                sx={{
+                                    textTransform: "none",
+                                }}
+                            >
+                                <Typography>Gallery</Typography>
+                            </Button>
+                            <Button
+                                color="inherit"
                                 onClick={() => navigate("/about")}
                                 sx={{
                                     textTransform: "none",
@@ -146,7 +155,7 @@ const NavBar = () => {
                                     textTransform: "none",
                                 }}
                             >
-                                <Typography>Usefull Info</Typography>
+                                <Typography>Useful Info</Typography>
                             </Button>
                         </Box>
                     )}
@@ -180,9 +189,9 @@ const NavBar = () => {
                 <DrawerHeader>
                     <IconButton onClick={handleDrawerClose}>
                         {theme.direction === "rtl" ? (
-                            <ChevronLeftIcon />
-                        ) : (
                             <ChevronRightIcon />
+                        ) : (
+                            <ChevronLeftIcon />
                         )}
                     </IconButton>
                 </DrawerHeader>

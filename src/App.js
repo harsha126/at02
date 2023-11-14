@@ -14,7 +14,6 @@ import InfoPage from "./components/InfoPage";
 import PublicRoute from "./components/PublicRoute";
 import ProtectedRoute from "./components/ProtectedRoute";
 import FriendsPage from "./components/FriendsPage";
-import Loader from "./components/Loader";
 
 function App() {
     // const userInfo = useSelector(user);

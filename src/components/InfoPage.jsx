@@ -2,6 +2,8 @@ import { Box, Paper, Typography } from "@mui/material";
 import React from "react";
 import pdf1 from "./../assets/SparshGuidanceCircular.pdf";
 import pdf2 from "./../assets/93d865c1-18a6-495d-9b11-01b68c371131.pdf";
+import dspImage from '../assets/DSP.jpg'
+
 
 const InfoPage = () => {
     return (
@@ -33,8 +35,14 @@ const InfoPage = () => {
                         </a>
                     </li>
                     <li>
-                        Sparsh Portal : &nbsp 
+                        Sparsh Portal :
                         <a href={pdf2} target="_blank">
+                            more ...
+                        </a>
+                    </li>
+                    <li>
+                        DSP Account Details :
+                        <a href={dspImage} target="_blank">
                             more ...
                         </a>
                     </li>

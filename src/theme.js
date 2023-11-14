@@ -1,7 +1,10 @@
-import { createTheme } from "@mui/material";
+import { createTheme } from "@mui/material/styles";
 
 export const theme = createTheme({
     typography: {
-        fontFamily: "Magneto, sans-serif",
+        fontFamily: "Arial, sans-serif",
+        specialFont: {
+            fontFamily: "Magneto, sans-serif",
+        },
     },
 });
