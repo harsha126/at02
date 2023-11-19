@@ -2,7 +2,7 @@ export const driveLinks = [
     {
         name: "Reunion 1",
         link: "https://drive.google.com/drive/folders/1D_L5L5YB-inH36cytrwz9nDSye9Gk1fd?usp=sharing ",
-        location: "Banglore",
+        location: "Bangalore",
     },
     {
         name: "Reunion 2",
@@ -11,7 +11,7 @@ export const driveLinks = [
     },
     {
         name: "Reunion 3",
-        location: "Bhuvaneshwar",
+        location: "Bhubaneshwar",
         link: "https://drive.google.com/drive/folders/1mt2GUmdSEntafZ9KdwfFvPb9iE43POyo?usp=sharing",
     },
     {

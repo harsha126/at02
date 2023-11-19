@@ -7,7 +7,7 @@ import dspImage from '../assets/DSP.jpg'
 
 const InfoPage = () => {
     return (
-        <Box padding="20px 100px 0px 100px">
+        <Box sx={{ padding: { xs: "6px", sm: "20px 100px 0px 100px" } }}>
             <Paper
                 sx={{
                     p: 3,

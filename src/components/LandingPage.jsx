@@ -52,17 +52,17 @@ const LandingPage = () => {
                     <Typography
                         variant="specialFont"
                         sx={{
-                            fontSize: { xs: "50px", md: "80px" },
+                            fontSize: { xs: "30px", md: "80px" },
                         }}
                     >
-                        Glimpses of reunion
+                        Glimpses of Reunion
                     </Typography>
                 </ThemeProvider>
             </Box>
             <MyScrollingElement
                 ref={scrollingElementRef}
                 sx={{
-                    maxHeight: "500px",
+                    maxHeight: { xs: "100vh", sm: "500px" },
                     marginX: "auto",
                     backdropFilter: "blur(5px)",
                     backgroundColor: "transparent",

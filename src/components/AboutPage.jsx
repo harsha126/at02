@@ -3,12 +3,12 @@ import React from "react";
 
 const AboutPage = () => {
     return (
-        <Box padding="20px 100px 0px 100px">
+        <Box sx={{ padding: { xs: "6px", sm: "20px 100px 0px 100px" } }}>
             <Paper
                 sx={{
                     p: 3,
-                    height:'80vh',
-                    overflow:'scroll'
+                    height: "80vh",
+                    overflow: "scroll",
                 }}
             >
                 <Typography
@@ -18,7 +18,7 @@ const AboutPage = () => {
                     marginLeft="auto"
                     marginRight="auto"
                     fontSize="50px"
-                    marginBottom='16px'
+                    marginBottom="16px"
                 >
                     About
                 </Typography>

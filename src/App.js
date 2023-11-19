@@ -35,7 +35,7 @@ function App() {
                 <Route path="/info" element={<InfoPage />} />
                 <Route path="/:id" element={<LandingPage />} />
                 <Route path="/" element={<LandingPage />} />
-                {/* <Route path="*" element={<Navigate replace to="/login" />} /> */}
+                <Route path="*" element={<Navigate replace to="/login" />} />
             </Routes>
         </Box>
     );
