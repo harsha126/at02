@@ -11,6 +11,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { handleLogin, user } from "../features/User.reducer";
 import { handleToaster } from "../features/Toaster.reducer";
+import Loader from "./Loader";
 
 const Main = () => {
     const [value, setValue] = React.useState(0);
@@ -31,12 +32,15 @@ const Main = () => {
     const [dob, setdob] = useState(null);
     const [dod, setdod] = useState(null);
     const [dom, setdom] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
     useEffect(() => {
         if (userInfo.isLogin) {
             if (location.state) {
                 setFormData(location.state);
             } else {
+                setIsLoading(true);
                 axios.get(GET_USER_BY_ID + "/" + userInfo._id).then((res) => {
+                    setIsLoading(false);
                     setFormData(res.data);
                     setOldImage(res.data.oldImage);
                     setNewImage(res.data.newImage);
@@ -46,7 +50,7 @@ const Main = () => {
                 });
             }
         }
-    }, [userInfo,location.state]);
+    }, [userInfo, location.state]);
     const normFile = (e) => {
         if (Array.isArray(e)) {
             return e;
@@ -145,9 +149,11 @@ const Main = () => {
                 formData.oldImage = await getBase64Image(oldImage);
             if (typeof formData.newImage !== "string")
                 formData.newImage = await getBase64Image(newImage);
+            setIsLoading(true);
             axios
                 .post(EDIT_USER, { ...formData, _id: userInfo._id })
                 .then((val) => {
+                    setIsLoading(false);
                     dispatch(
                         handleToaster({
                             message: "Successfully edited",
@@ -158,6 +164,7 @@ const Main = () => {
                     setFormData(val.data);
                 })
                 .catch((err) => {
+                    setIsLoading(false);
                     dispatch(
                         handleToaster({
                             message: "Something went wrong",
@@ -234,9 +241,11 @@ const Main = () => {
             formData.dom = dom;
             formData.oldImage = await getBase64Image(oldImage);
             formData.newImage = await getBase64Image(newImage);
+            setIsLoading(true);
             axios
                 .post(ADD_USER, formData)
                 .then((val) => {
+                    setIsLoading(false);
                     const userData = val.data;
                     dispatch(
                         handleToaster({
@@ -254,6 +263,7 @@ const Main = () => {
                     navigate("/profile", { state: { ...userData } });
                 })
                 .catch((err) => {
+                    setIsLoading(false);
                     dispatch(
                         handleToaster({
                             message: "Something wetn wrong",
@@ -363,15 +373,21 @@ const Main = () => {
 
     return (
         <Box width="100%">
+            {isLoading && <Loader />}
             <Box width="100%" mt={2} display="flex" justifyContent="center">
                 <Grid
                     container
-                    sx={{ width: { xs: "100%", lg: "70%" } }}
+                    sx={{ width: { xs: "100%", md: "100%", lg: "70%" } }}
                     mx="auto"
                     mt={2}
                     height="90px"
                 >
-                    <Grid item xs="none">
+                    <Grid
+                        item
+                        xs="none"
+                        md={3}
+                        sx={{ marginX: { xs: "auto" } }}
+                    >
                         <Card elevation={2} sx={{ display: "inline-block" }}>
                             <img
                                 src={formData?.newImage}
@@ -380,13 +396,17 @@ const Main = () => {
                             />
                         </Card>
                     </Grid>
-                    <Grid item xs={9} display="inline-block">
-                        <Card>
+                    <Grid item xs={12} md={9} display="inline-block">
+                        <Card sx={{ m: 1 }}>
                             <Tabs
                                 value={value}
                                 onChange={handleTabChange}
                                 aria-label="basic tabs example"
-                                sx={{ width: "100%", px: 2 }}
+                                sx={{
+                                    width: "100%",
+                                    px: 2,
+                                    display: { xs: "none", md: "block" },
+                                }}
                             >
                                 {sectionRefs.map((section, index) => (
                                     <Tab
@@ -400,8 +420,16 @@ const Main = () => {
                                 ))}
                             </Tabs>
 
-                            <Box height="77vh" overflow="auto" ref={parentBox}>
-                                <Box height="60vh" p={2}>
+                            <Box
+                                height="77vh"
+                                overflow="auto"
+                                ref={parentBox}
+                                m={1}
+                                p={1}
+                            >
+                                <Box
+                                    sx={{ height: { xs: "100vh", sm: "60vh" } }}
+                                >
                                     <Typography
                                         variant="h5"
                                         align="left"
@@ -419,7 +447,7 @@ const Main = () => {
                                         }}
                                     >
                                         <Grid container spacing={2}>
-                                            <Grid item xs={6}>
+                                            <Grid item xs={12} sm={6}>
                                                 <TextField
                                                     value={
                                                         formData.serviceNo
@@ -444,7 +472,7 @@ const Main = () => {
                                                     )}
                                                 />
                                             </Grid>
-                                            <Grid item xs={6}>
+                                            <Grid item xs={12} sm={6}>
                                                 <TextField
                                                     value={
                                                         formData.name
@@ -465,7 +493,7 @@ const Main = () => {
                                                     error={check(error.name)}
                                                 />
                                             </Grid>
-                                            <Grid item xs={6}>
+                                            <Grid item xs={12} sm={6}>
                                                 <TextField
                                                     value={
                                                         formData.trade
@@ -487,7 +515,7 @@ const Main = () => {
                                                     error={check(error.trade)}
                                                 />
                                             </Grid>
-                                            <Grid item xs={6}>
+                                            <Grid item xs={12} sm={6}>
                                                 <DatePicker
                                                     format="DD/MM/YYYY"
                                                     value={
@@ -523,7 +551,7 @@ const Main = () => {
                                                     }
                                                 />
                                             </Grid>
-                                            <Grid item xs={6}>
+                                            <Grid item xs={12} sm={6}>
                                                 <DatePicker
                                                     format="DD/MM/YYYY"
                                                     value={
@@ -558,7 +586,7 @@ const Main = () => {
                                                     error={check(error.dod)}
                                                 />
                                             </Grid>
-                                            <Grid item xs={6}>
+                                            <Grid item xs={12} sm={6}>
                                                 <TextField
                                                     value={
                                                         formData.lastPosting
@@ -582,7 +610,7 @@ const Main = () => {
                                                     )}
                                                 />
                                             </Grid>
-                                            <Grid item xs={6}>
+                                            <Grid item xs={12} sm={6}>
                                                 <TextField
                                                     value={
                                                         formData.phoneNo
@@ -604,7 +632,7 @@ const Main = () => {
                                                     error={check(error.phoneNo)}
                                                 />
                                             </Grid>
-                                            <Grid item xs={6}>
+                                            <Grid item xs={12} sm={6}>
                                                 <TextField
                                                     value={
                                                         formData.password
@@ -631,7 +659,7 @@ const Main = () => {
                                         </Grid>
                                     </Box>
                                 </Box>
-                                <Box height="40vh" p={2}>
+                                <Box sx={{marginTop:{xs:'65px',sm:'0px'}}} >
                                     <Typography
                                         variant="h5"
                                         align="left"
@@ -649,7 +677,7 @@ const Main = () => {
                                         }}
                                     >
                                         <Grid container spacing={2}>
-                                            <Grid item xs={6}>
+                                            <Grid item xs={12} sm={6}>
                                                 <TextField
                                                     value={
                                                         formData.company
@@ -671,7 +699,7 @@ const Main = () => {
                                                     error={check(error.company)}
                                                 />
                                             </Grid>
-                                            <Grid item xs={6}>
+                                            <Grid item xs={12} sm={6}>
                                                 <TextField
                                                     required
                                                     value={
@@ -695,7 +723,7 @@ const Main = () => {
                                                     )}
                                                 />
                                             </Grid>
-                                            <Grid item xs={6}>
+                                            <Grid item xs={12} sm={6}>
                                                 <TextField
                                                     value={
                                                         formData.workPlace
@@ -722,7 +750,7 @@ const Main = () => {
                                         </Grid>
                                     </Box>
                                 </Box>
-                                <Box height="60vh" p={2}>
+                                <Box height="60vh">
                                     <Typography
                                         variant="h5"
                                         align="left"
@@ -741,7 +769,7 @@ const Main = () => {
                                         }}
                                     >
                                         <Grid container spacing={2}>
-                                            <Grid item xs={6}>
+                                            <Grid item xs={12} sm={6}>
                                                 <TextField
                                                     fullWidth
                                                     value={
@@ -766,7 +794,7 @@ const Main = () => {
                                                     )}
                                                 />
                                             </Grid>
-                                            <Grid item xs={6}>
+                                            <Grid item xs={12} sm={6}>
                                                 <DatePicker
                                                     format="DD/MM/YYYY"
                                                     value={
@@ -800,7 +828,7 @@ const Main = () => {
                                                     }
                                                 />
                                             </Grid>
-                                            <Grid item xs={6}>
+                                            <Grid item xs={12} sm={6}>
                                                 <TextField
                                                     value={
                                                         formData.children
@@ -822,7 +850,7 @@ const Main = () => {
                                                     }
                                                 />
                                             </Grid>
-                                            <Grid item xs={6}>
+                                            <Grid item xs={12} sm={6}>
                                                 <TextField
                                                     value={
                                                         formData.homeTown
@@ -874,7 +902,7 @@ const Main = () => {
                                         </Grid>
                                     </Box>
                                 </Box>
-                                <Box ref={photosUploadRef} p={2}>
+                                <Box ref={photosUploadRef} p={2} sx={{marginTop:{xs:'65px',sm:'0px'}}}>
                                     <Typography
                                         variant="h5"
                                         align="left"

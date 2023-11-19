@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { user } from "../features/User.reducer";
 import { handleToaster } from "../features/Toaster.reducer";
 
-const ImageBox = ({ title, image, link }) => {
+const ImageBox = ({ title, image, link,location }) => {
     const userInfo = useSelector(user);
     const dispatch = useDispatch();
     const images = [1, 2, 3, 4, 5].map((num) => {
@@ -52,7 +52,7 @@ const ImageBox = ({ title, image, link }) => {
                     id={title}
                     padding={3}
                 >
-                    <Typography variant="title"  fontSize='20px' fontWeight='bold'>{title}</Typography>
+                    <Typography variant="title"  fontSize='20px' fontWeight='bold'>{title} - {location}</Typography>
                 </Box>
                 <Divider variant="fullWidth" />
                 <Grid container>

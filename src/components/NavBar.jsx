@@ -69,7 +69,7 @@ const NavBar = () => {
             onKeyDown={toggleDrawer(false)}
         >
             <List>
-                {["AT02 Friends", "Useful Info", "About", "Profile"].map(
+                {["AT02 Friends", "Useful Info", "About Us", "Profile"].map(
                     (text, index) => (
                         <ListItem key={text}>
                             <ListItemButton

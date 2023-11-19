@@ -50,12 +50,12 @@ const LandingPage = () => {
             >
                 <ThemeProvider theme={theme}>
                     <Typography
-                        variant="title"
+                        variant="specialFont"
                         sx={{
                             fontSize: { xs: "50px", md: "80px" },
                         }}
                     >
-                        REUNION
+                        Glimpses of reunion
                     </Typography>
                 </ThemeProvider>
             </Box>
@@ -75,6 +75,7 @@ const LandingPage = () => {
                         key={drive.name}
                         link={drive.link}
                         image={findKeyByValue(reunionMappings, drive.name)}
+                        location={drive.location}
                     />
                 ))}
             </MyScrollingElement>
