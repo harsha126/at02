@@ -266,7 +266,7 @@ const Main = () => {
                     setIsLoading(false);
                     dispatch(
                         handleToaster({
-                            message: "Something wetn wrong",
+                            message: "Something went wrong",
                             severity: "error",
                             open: true,
                         })
