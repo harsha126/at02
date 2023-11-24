@@ -12,12 +12,12 @@ export const driveLinks = [
     {
         name: "Reunion 3",
         location: "Bhubaneshwar",
-        link: "https://drive.google.com/drive/folders/1mt2GUmdSEntafZ9KdwfFvPb9iE43POyo?usp=sharing",
+        link: "https://drive.google.com/drive/folders/1Zc4aJ3ImegIY3gEb7KWFawAe8RUOVFDw?usp=sharing",
     },
     {
         name: "Reunion 4",
         location: "Pondicherry",
-        link: "https://drive.google.com/drive/folders/1Zc4aJ3ImegIY3gEb7KWFawAe8RUOVFDw?usp=sharing",
+        link: "https://drive.google.com/drive/folders/1mt2GUmdSEntafZ9KdwfFvPb9iE43POyo?usp=sharing",
     },
     {
         name: "Reunion 5",
