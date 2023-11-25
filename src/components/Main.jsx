@@ -250,7 +250,7 @@ const Main = () => {
                     dispatch(
                         handleToaster({
                             message: "Submitted Successfully",
-                            severity: "error",
+                            severity: "success",
                             open: true,
                         })
                     );
