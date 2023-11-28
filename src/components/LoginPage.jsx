@@ -17,6 +17,7 @@ import { useDispatch } from "react-redux";
 import { handleToaster } from "../features/Toaster.reducer";
 import { handleLogin } from "../features/User.reducer";
 import Loader from "./Loader";
+import { isNumberInList } from "../util";
 
 const LoginPage = () => {
     const dispatch = useDispatch();
@@ -37,7 +38,7 @@ const LoginPage = () => {
         const pattern =
             /^688(196|197|198|199|2[0-9]{2}|3[0-8][0-9]|39[0-6]|095)$/;
         const er = {};
-        er.serviceNo = !pattern.test(serviceNo);
+        er.serviceNo = !isNumberInList(serviceNo);
         er.password = password.length === 0;
         setErrors({ ...er });
         return er;

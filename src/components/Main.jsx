@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { handleLogin, user } from "../features/User.reducer";
 import { handleToaster } from "../features/Toaster.reducer";
 import Loader from "./Loader";
+import { isNumberInList } from "../util";
 
 const Main = () => {
     const [value, setValue] = React.useState(0);
@@ -187,10 +188,11 @@ const Main = () => {
             if (val === "serviceNo") {
                 temp = {
                     ...temp,
-                    serviceNo:
-                        !/^688(196|197|198|199|2[0-9]{2}|3[0-8][0-9]|39[0-6]|095)$/.test(
-                            formData?.serviceNo
-                        ),
+                    // serviceNo:
+                    //     !/^688(196|197|198|199|2[0-9]{2}|3[0-8][0-9]|39[0-6]|095)$/.test(
+                    //         formData?.serviceNo
+                    //     ),
+                    serviceNo: !isNumberInList(formData?.serviceNo),
                 };
             }
         });
@@ -659,7 +661,11 @@ const Main = () => {
                                         </Grid>
                                     </Box>
                                 </Box>
-                                <Box sx={{marginTop:{xs:'65px',sm:'0px'}}} >
+                                <Box
+                                    sx={{
+                                        marginTop: { xs: "65px", sm: "0px" },
+                                    }}
+                                >
                                     <Typography
                                         variant="h5"
                                         align="left"
@@ -902,7 +908,13 @@ const Main = () => {
                                         </Grid>
                                     </Box>
                                 </Box>
-                                <Box ref={photosUploadRef} p={2} sx={{marginTop:{xs:'65px',sm:'0px'}}}>
+                                <Box
+                                    ref={photosUploadRef}
+                                    p={2}
+                                    sx={{
+                                        marginTop: { xs: "65px", sm: "0px" },
+                                    }}
+                                >
                                     <Typography
                                         variant="h5"
                                         align="left"
