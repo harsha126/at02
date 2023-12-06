@@ -29,4 +29,9 @@ export const driveLinks = [
         location: "Kerala",
         link: "https://drive.google.com/drive/folders/1xDNg0866hXRj_DL3rRaXkemiuTm6C-et?usp=sharing",
     },
+    {
+        name: "Reunion 7",
+        location: "Goa",
+        link: "https://drive.google.com/drive/folders/1t1c3YdfjgzCt_AQOmV6SRdGPqRTTePJp?usp=sharing",
+    },
 ];

@@ -5,4 +5,5 @@ export const reunionMappings = {
     reunion4: "Reunion 4",
     reunion5: "Reunion 5",
     reunion6: "Reunion 6",
+    reunion7: "Reunion 7",
 };
